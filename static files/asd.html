@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Periódico Escolar - I.E. COMFAMILIAR</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #logocabeza{
+      height: 180px;
+      margin-top: -40px;
+      margin-bottom: -40px;
+      margin-right: 85px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <!-- Encabezado -->
+  <header class="bg-green-800 text-white py-4 px-6 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold">I.E. COMFAMILIAR</h1>
+        <p class="text-sm">Periódico escolar de la Institución Educativa COMFAMILIAR</p>
+      </div>
+      <div class="items-center">
+        <a href="/inicio"><img src="logo2.png" id="logocabeza"></a>
+      </div>
+      <div class="text-right">
+        <p class="text-sm">Año 2025 - Edición #1</p>
+        <p class="text-sm">"Educación con valores para el futuro"</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Barra de Navegación -->
+  <nav class="bg-green-700 text-white py-2 px-6 shadow-sm">
+    <div class="container mx-auto flex space-x-6">
+      <a href="/inicio" class="hover:underline">Inicio</a>
+      <a href="/novedades" class="hover:underline">Novedades</a>
+      <a href="/foro" class="hover:underline">Foro</a>
+      <a href="/subir-trabajos" class="hover:underline">Subir Trabajos</a>
+      <a href="/login" class="hover:underline">Login</a>
+    </div>
+  </nav>
+
+  <!-- Contenido Principal -->
+  <main class="container mx-auto p-6">
+    <!-- Noticia Destacada -->
+    <section class="mb-8">
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <img src="/IE.png" alt="Evento escolar" class="w-full h-64 object-cover">
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-green-800 mb-2">Gran Festival Artístico 2025</h2>
+          <p class="text-gray-700 mb-4">El pasado viernes se llevó a cabo el Festival Artístico anual, donde los estudiantes demostraron sus talentos en música, danza y teatro. ¡Fue un éxito rotundo!</p>
+          <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Cultura</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Otras Noticias (Grid) -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <!-- Noticia 1 -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <img src="/IMG-9848-1.jpg" alt="Deportes" class="w-full h-40 object-cover">
+        <div class="p-4">
+          <h3 class="text-xl font-bold text-green-800 mb-2">Equipo de Fútbol Gana Campeonato</h3>
+          <p class="text-gray-700 mb-3">Nuestro equipo de fútbol sub-15 se coronó campeón en el torneo intercolegial.</p>
+          <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Deportes</span>
+        </div>
+      </div>
+
+      <!-- Noticia 2 -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <img src="/IMG_20210302_101213-scaled.jpg" alt="Ciencia" class="w-full h-40 object-cover">
+        <div class="p-4">
+          <h3 class="text-xl font-bold text-green-800 mb-2">Feria de Ciencias 2025</h3>
+          <p class="text-gray-700 mb-3">Los estudiantes presentaron proyectos innovadores en la Feria de Ciencias anual.</p>
+          <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Ciencia</span>
+        </div>
+      </div>
+
+      <!-- Noticia 3 -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <img src="/foto-1-1200x675.jpg" alt="Evento" class="w-full h-40 object-cover">
+        <div class="p-4">
+          <h3 class="text-xl font-bold text-green-800 mb-2">Charla con Profesionales</h3>
+          <p class="text-gray-700 mb-3">Invitados especiales compartieron sus experiencias laborales con los estudiantes.</p>
+          <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Orientación</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pie de Página -->
+  <footer class="bg-green-900 text-white py-6 px-6">
+    <div class="container mx-auto text-center">
+      <p class="mb-2">© 2025 Periódico Escolar - I.E. COMFAMILIAR</p>
+    </div>
+  </footer>
+</body>
+</html>

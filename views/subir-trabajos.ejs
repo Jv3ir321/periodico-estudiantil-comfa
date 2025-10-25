@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subir Trabajos - I.E. COMFAMILIAR</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="/logo2.png">
+
+  <style>
+    #logocabeza{
+      height: 180px;
+      margin-top: -40px;
+      margin-bottom: -40px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="bg-green-800 text-white py-4 px-6 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold">I.E. COMFAMILIAR</h1>
+        <p class="text-sm">Subir Trabajos Escolares</p>
+      </div>
+      <div class="items-center">
+        <a href="index.html"><img src="logo2.png" id="logocabeza"></a>
+      </div>
+      <div class="text-right">
+        <p class="text-sm">Año 2025 - Edición #1</p>
+        <p class="text-sm">"Educación con valores para el futuro"</p>
+      </div>
+    </div>
+  </header>
+
+ <!-- Barra de Navegación -->
+  <nav class="bg-green-700 text-white py-2 px-6 shadow-sm">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex space-x-6">
+        <a href="/inicio" class="hover:underline">Inicio</a>
+        <a href="/novedades" class="hover:underline">Novedades</a>
+        <a href="/foro" class="hover:underline">Foro</a>
+        <a href="/trabajos" class="hover:underline">Trabajos</a>
+        <a href="/logout" class="hover:text-red-400 hover:font-semibold">Cerrar Sesión</a>
+      </div>
+      <span class="font-semibold">Bienvenido/a, <%= datos1.nomusr %></span>
+    </div>
+  </nav>
+
+  <main class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold text-green-800 border-b-2 border-green-800 pb-2 mb-6">Subir Trabajo Escolar</h2>
+    
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto">
+      <form method="post" action="/upload" enctype="multipart/form-data">
+        <div class="mb-4">
+
+          <div class="mb-4">
+          <label class="block text-gray-700 font-bold mb-2">Titulo</label>
+          <input type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" name="titulotrab">
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 font-bold mb-2">Materia</label>
+          <input type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" name="materia">
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 font-bold mb-2">Descripcion del trabajo</label>
+          <textarea class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" name="trabajodesc"></textarea>
+        </div>
+
+
+        <div class="mb-4">
+          <label class="block text-gray-700 font-bold mb-2">Archivo (PDF, Word, etc.)</label>
+          <input type="file" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document application/pdf" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" name="archivostrab">
+        </div>
+
+        <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition">
+          Subir Trabajo
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="bg-green-900 text-white py-6 px-6">
+    <div class="container mx-auto text-center">
+      <p class="mb-2">© 2025 Periódico Escolar - I.E. COMFAMILIAR</p>
+    </div>
+  </footer>
+</body>
+</html>

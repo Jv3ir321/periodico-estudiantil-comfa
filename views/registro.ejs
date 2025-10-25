@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Cuenta - I.E. COMFAMILIAR</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+    <link rel="icon" href="/logo2.png">
+
+</script>
+  <style>
+    #logocabeza{
+      height: 180px;
+      margin-top: -40px;
+      margin-bottom: -40px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="bg-green-800 text-white py-4 px-6 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">     
+      <div>
+        <h1 class="text-3xl font-bold">I.E. COMFAMILIAR</h1>
+        <p class="text-sm">Iniciar Sesión</p>
+      </div>
+       <div class="items-center">
+        <a href="/"><img src="logo2.png" id="logocabeza"></a>
+      </div>
+      <div class="text-right">
+        <p class="text-sm">Año 2025 - Edición #1</p>
+        <p class="text-sm">"Educación con valores para el futuro"</p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="bg-green-700 text-white py-2 px-6 shadow-sm">
+    <div class="container mx-auto flex space-x-6">
+      <a href="/inicio" class="hover:underline">Inicio</a>
+      <a href="/novedades" class="hover:underline">Novedades</a>
+      <a href="/reqadmin" class="hover:underline">Peticiones</a>
+      <a href="/foro" class="hover:underline">Foro</a>
+      <a href="/subir-trabajos" class="hover:underline">Subir Trabajos</a>
+      <a href="/" class="hover:underline font-bold">Login</a>
+    </div>
+  </nav>
+
+  <main class="container mx-auto p-6 flex justify-center">
+    <div class="bg-white rounded-lg shadow-md p-8 max-w-md w-full">
+      <h2 class="text-2xl font-bold text-green-800 mb-6 text-center">Regístrate</h2>
+      
+      <form id="formulario" action="/validar" method="post">
+        
+        <div class="mb-4">
+          <label class="block text-gray-700 font-bold mb-2">Identificaion</label>
+          <input type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" id="usr" name="id" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 font-bold mb-2">Usuario</label>
+          <input type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" id="usr" name="usuario" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 font-bold mb-2">Correo Institucional</label>
+          <input type="email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" id="mail" name="mail" required>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-gray-700 font-bold mb-2">Contraseña</label>
+          <input type="password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" id="pass" name="contraseña" required>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-gray-700 font-bold mb-2">Rol</label>
+          <select class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" id="rol" name="rol" required>
+          <option value="" disabled selected>Selecciona tu rol</option>
+          <option value="Estudiante">Estudiante</option>
+          <option value="Profesor">Profesor</option>
+          <option value="Directivo">Directivo</option>
+          <option value="Administrador">Administrador</optio>
+        </select>
+</div>
+        <button type="submit" class="w-full bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition mb-4">
+          Crear cuenta
+        </button>
+
+      </form>
+    </div>
+  </main>
+
+  <footer class="bg-green-900 text-white py-6 px-6">
+    <div class="container mx-auto text-center">
+      <p class="mb-2">© 2025 Periódico Escolar - I.E. COMFAMILIAR</p>
+    </div>
+  </footer>
+
+</body>
+<script>
+
+
+
+   const register = document.getElementById("formulario")
+
+register.addEventListener("submit", function(e){
+    //e.preventDefault()
+    usuario = document.getElementById("usr")
+    mail = document.getElementById("mail")
+    passwd = document.getElementById("pswd")
+    passwd2 = document.getElementById("pswd2")
+    
+    if (usuario.value.length < 5) {
+      e.preventDefault()
+        Swal.fire({
+            title: "Error",
+            text: "Usuario Inválido, intente de nuevo.",
+            icon: "error"
+        })
+    }
+    else if (passwd.value.length < 5) {
+      e.preventDefault()
+        Swal.fire({
+            title: "Error",
+            text: "Contraseña inválida, intente de nuevo",
+            icon: "error"
+        })
+    } 
+  //  else if (passwd.value !== passwd2.value) {
+  //    e.preventDefault()
+  //      Swal.fire({
+  //          title: "Error",
+  //          text: "Las contraseñas no concuerdan, intente de nuevo",
+  //          icon: "error"
+  //      })
+  //  }
+    else {
+       Swal.fire({
+            title: "Satisfactorio",
+            text: "Te has registrado con éxito, por favor inicie sesión.",
+            icon: "success"
+      })
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
+    }
+})
+
+
+      
+
+
+
+</script>
+
+</html>
