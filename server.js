@@ -1,57 +1,52 @@
-// IMPORTE DE LIBRERIAS A NODEJS
-
-const bcrypt = require('bcrypt')
-const session = require('express-session')
-const express = require("express");
+// ========== IMPORTACIÓN DE DEPENDENCIAS ==========
+const bcrypt = require('bcrypt')           // Para encriptar contraseñas
+const session = require('express-session') // Manejo de sesiones
+const express = require("express");        // Framework web
 const app = express();
-const path = require('path');
-const mysql = require("mysql");
-const multer  = require('multer');
+const path = require('path');             // Manejo de rutas
+const mysql = require("mysql");           // Base de datos MySQL
+const multer = require('multer');         // Manejo de archivos
 const { log } = require('console');
 const MySQLStore = require('express-mysql-session')(session);
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-    cb(null, './uploads')
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname)
-  }
-})
 
+// ========== CONFIGURACIÓN DE MULTER PARA SUBIDA DE ARCHIVOS ==========
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, './uploads'),
+    filename: (req, file, cb) => cb(null, file.originalname)
+})
 const upload = multer({ storage: storage })
 
-
+// ========== CONFIGURACIÓN DE BASE DE DATOS ==========
 const conexion = mysql.createConnection({
-    host:"localhost",
-    database:"periodico",
-    user:"nodeuser",
-    password:"12345"
+    host: "localhost",
+    database: "periodico",
+    user: "nodeuser",
+    password: "12345"
 });
 
+// Verificar conexión
 conexion.connect((err) => {
-    if (err) {
-        throw err
-    } else {
-        console.log("Conexion satisfactoria")
-    }
+    if (err) throw err;
+    console.log("Conexión a MySQL satisfactoria")
 });
 
-const SESSION_MAX = 7 * 24 * 60 * 60 * 1000 // 7 días
+// ========== CONFIGURACIÓN DE SESIONES ==========
+const SESSION_MAX = 7 * 24 * 60 * 60 * 1000 // 7 días en milisegundos
 
-
+// Configurar almacenamiento de sesiones en MySQL
 const sessionStore = new MySQLStore({
-  host: 'localhost',
-  port: 3306,
-  user: 'nodeuser',
-  password: '12345',
-  database: 'periodico',
-  clearExpired: true,
-  checkExpirationInterval: 900000, // 15 minutos
-  expiration: SESSION_MAX,
+    host: 'localhost',
+    port: 3306,
+    user: 'nodeuser',
+    password: '12345',
+    database: 'periodico',
+    clearExpired: true,
+    checkExpirationInterval: 900000, // Limpiar sesiones expiradas cada 15 min
+    expiration: SESSION_MAX,
     createDatabaseTable: true,
 });
 
-// PARAMETROS DE LA APP
+// ========== MIDDLEWARE Y CONFIGURACIÓN DE EXPRESS ==========
 app.use(session({
     key: 'session_cookie_name',
     secret: "tu_contraseña",
@@ -62,27 +57,37 @@ app.use(session({
     cookie: {
         maxAge: SESSION_MAX,
         httpOnly: true,
-        secure: false, // Cambia a true en prduccion 
+        secure: false, // Cambiar a true en producción (HTTPS)
         sameSite: 'lax'
     }
 }));
 
+// Configuración de parser y archivos estáticos
 app.use(express.json());
-app.use(express.urlencoded({extended:false}))
+app.use(express.urlencoded({extended: false}))
 app.use(express.static(path.join(__dirname, 'public')));
-app.set('views', path.join(__dirname, 'views'));
-app.set("view engine", "ejs");
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// DIRECTORIOS
+// Configuración del motor de vistas
+app.set('views', path.join(__dirname, 'views'));
+app.set("view engine", "ejs");
 
+// ========== RUTAS GET ==========
+// Middleware de autenticación
+const requireLogin = (req, res, next) => {
+    if (!req.session.login) {
+        return res.redirect("/")
+    }
+    next();
+}
+
+// Ruta raíz - Login
 app.get("/", (req, res) => {
     if (!req.session.login) {
         res.render("login")
     } else {
         res.redirect("/inicio")
     }
-    
 });
 
 app.get("/inicio", (req, res) => {
@@ -198,7 +203,11 @@ app.get("/reqadmin", (req, res) => {
     }
 })
 
-// POSTS EXPRESS
+
+
+
+// ========== RUTAS POST ==========
+// Registro de usuarios
 app.post("/validar", async (req, res) => {
     const datos = req.body; 
     let idusuario = datos.id
@@ -242,6 +251,7 @@ app.post("/validar", async (req, res) => {
     }
 })
 
+// Login de usuarios  
 app.post("/verLogin", (req, res) => {
     const datos = req.body;
     let correo = datos.correo
@@ -290,6 +300,7 @@ app.post("/verLogin", (req, res) => {
     })
 })
 
+// Publicaciones en foro
 app.post("/enviar", (req, res) => {
     const datapub = req.body
 
@@ -555,6 +566,61 @@ app.post("/eliminarnovedad", (req,res) => {
   } )
 
 })
+
+app.post("/editar-post", (req, res) => {
+    if (!req.session.login) {
+        res.redirect("/")
+    }
+
+    const id_publicacion = req.body.id_publicacion;
+
+    const consultaPost = "SELECT * FROM PUBLICACIONES WHERE id_publicacion = ?"
+
+    conexion.query(consultaPost, [id_publicacion], (err, rows) => {
+        if (err) {
+            console.log("Hubo un error al encontrar la publicacion")
+            res.status(500).send("Hubo un error", err)
+        } 
+
+        let publicacion = rows[0];
+
+        if (publicacion.length === 0) {
+            console.log("La publicacion no existe")
+            res.status(500).send("La publicacion no existe")
+        } else {
+            if (req.session.rolusr === "Administrador" || req.session.nomusr === publicacion.autor_publicacion) {
+                res.render("editar-post", {datos1: req.session, publicacion: publicacion})
+            } else {
+                res.redirect("/foro")
+            }   
+        }
+});
+
+app.post("/guardar-cambios", (req, res) => {
+    if (!req.session.login) {
+        res.redirect("/")
+    } 
+      const data = req.body
+            let nuevoTitulo = data.nuevo_titulo
+            let nuevoContenido = data.nuevo_contenido
+
+            const consultaActualizar = "UPDATE PUBLICACIONES SET nombre_publicacion = ?, contenido_publicacion = ? WHERE id_publicacion = ?"
+            conexion.query(consultaActualizar, [nuevoTitulo, nuevoContenido, id_publicacion], (err) => {
+                if (err) {
+                    console.log("Error al actualizar la publicacion", err)
+                    res.status(500).send("Error al actualizar la publicacion")
+                } else {
+                    console.log("Publicacion actualizada con exito")
+                    res.redirect("/foro")
+                }
+            })
+    })
+});
+
+
+
+
+
 
 
 app.listen(4000, () => {
