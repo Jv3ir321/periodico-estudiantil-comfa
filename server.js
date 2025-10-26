@@ -224,7 +224,21 @@ app.get("/foro/:nombre_publicacion", (req, res) => {
             if (!publicacion) {
                 return res.status(404).send("Publicación no encontrada")
             }
-            res.render("foro-detalle", {datos1: req.session, publicacion: publicacion})
+            const id_publicacion = publicacion.id_publicacion
+            const consultaRespuestas = "SELECT * FROM RESPUESTAS_FORO WHERE id_publicacion = ? ORDER BY fecha_respuesta ASC";
+
+            conexion.query(consultaRespuestas, [id_publicacion], (err, response) => {
+                if (err) {
+                    console.log("Error al obtener respuestas:", err)
+                    return res.status(500).send("Error al cargar respuestas")
+                } if (!response) {
+                    return res.status(404).send("Respuestas no encontradas")
+                }
+                
+                const respuestas = response;
+
+                res.render("foro-detalle", {datos1: req.session, publicacion: publicacion, respuestas: respuestas})
+            })
         })
     }
 })
@@ -641,6 +655,25 @@ app.post("/guardar-cambios", (req, res) => {
     })
 });
 
+app.post("/responder", (req, res) => {
+    if (!req.session.login) {
+        res.redirect("/")
+    }
+    const nombre_publicacion = req.body.nombre_publicacion;
+    const id_publicacion = req.body.id_publicacion;
+    const contenido_respuesta = req.body.contenido_respuesta;
+
+    const consultaInsertarRespuesta = "INSERT INTO RESPUESTAS_FORO (id_publicacion, contenido_respuesta, autor_respuesta) VALUES (?, ?, ?)"
+    conexion.query(consultaInsertarRespuesta, [id_publicacion, contenido_respuesta, req.session.nomusr], (err) => {
+        if (err) {
+            console.log("Error al insertar la respuesta", err)
+            res.status(500).send("Error al insertar la respuesta")
+        } else {
+            console.log("Respuesta insertada con exito")
+            res.redirect("/foro/" + nombre_publicacion)
+        }
+    })
+});
 
 // ========== INICIAR SERVIDOR ==========   
 app.listen(5500, () => {

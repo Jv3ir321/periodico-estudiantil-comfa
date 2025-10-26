@@ -6,84 +6,509 @@
   <title>Trabajos Escolares - I.E. COMFAMILIAR</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" href="/logo2.png">
-
   <style>
-    #logocabeza{
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+
+    .animate-fade-in-up {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .animate-slide-in {
+      animation: slideInRight 0.6s ease-out forwards;
+    }
+
+    .card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-hover:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .logo-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    #logocabeza {
       height: 180px;
       margin-top: -40px;
       margin-bottom: -40px;
+      margin-right: 85px;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .section-title {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 12px;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981, #059669);
+      border-radius: 2px;
+    }
+
+    .btn-download {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .btn-download::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-download:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-download:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4);
+    }
+
+    .btn-delete {
+      transition: all 0.3s ease;
+    }
+
+    .btn-delete:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+    }
+
+    /* Responsive Menu */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .mobile-menu.active {
+      max-height: 500px;
+      transition: max-height 0.4s ease-in;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: white;
+      margin: 5px 0;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .empty-state {
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .work-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    }
+
+    .file-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .subject-badge {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      border-left: 3px solid #3b82f6;
+    }
+
+    .author-avatar {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .filter-btn {
+      transition: all 0.3s ease;
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      transform: scale(1.05);
     }
   </style>
 </head>
-<body class="bg-gray-100 font-sans">
-  <header class="bg-green-800 text-white py-4 px-6 shadow-md">
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 font-sans">
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const hamburger = document.getElementById('hamburger');
+      menu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    }
+
+    function filterWorks(materia) {
+      const works = document.querySelectorAll('.work-item');
+      const buttons = document.querySelectorAll('.filter-btn');
+      
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      works.forEach(work => {
+        if (materia === 'todos' || work.dataset.materia === materia) {
+          work.style.display = 'block';
+        } else {
+          work.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+  <!-- Encabezado -->
+  <header class="bg-gradient-to-r from-green-800 via-green-700 to-green-800 text-white py-4 px-6 shadow-2xl">
     <div class="container mx-auto flex justify-between items-center">
-      <div>
-        <h1 class="text-3xl font-bold">I.E. COMFAMILIAR</h1>
-        <p class="text-sm">Trabajos Escolares</p>
+      <div class="animate-slide-in">
+        <h1 class="text-4xl font-bold tracking-tight">I.E. COMFAMILIAR</h1>
+        <p class="text-sm mt-1 opacity-90">Repositorio de Trabajos Escolares</p>
       </div>
-      <div class="items-center">
-        <a href="/inicio"><img src="logo2.png" id="logocabeza" alt="Logo"></a>
+      <div class="items-center logo-float">
+        <a href="/inicio" class="block transition-transform hover:scale-105">
+          <img src="logo2.png" id="logocabeza" alt="Logo Comfamiliar">
+        </a>
       </div>
-      <div class="text-right">
-        <p class="text-sm">Año 2025 - Edición #1</p>
-        <p class="text-sm">"Educación con valores para el futuro"</p>
+      <div class="text-right animate-slide-in hidden md:block">
+        <p class="text-sm font-semibold">Año 2025 - Edición #1</p>
+        <p class="text-sm mt-1 italic opacity-90">"Educación con valores para el futuro"</p>
       </div>
     </div>
   </header>
 
   <!-- Barra de Navegación -->
-  <nav class="bg-green-700 text-white py-2 px-6 shadow-sm">
-    <div class="container mx-auto flex justify-between items-center">
-      <div class="flex space-x-6">
-        <a href="/inicio" class="hover:underline">Inicio</a>
-        <a href="/novedades" class="hover:underline">Novedades</a>
-        <a href="/trabajos" class="hover:underline">Trabajos</a>
-        <a href="/foro" class="hover:underline">Foro</a>
-        <a href="/subir-trabajos" class="hover:underline">Subir Trabajos</a>
-        <a href="/logout" class="hover:text-red-400 hover:font-semibold">Cerrar Sesión</a>
+  <nav class="bg-green-700 text-white py-3 px-6 shadow-lg sticky top-0 z-50 glass-effect bg-opacity-95">
+    <div class="container mx-auto">
+      <div class="flex justify-between items-center">
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex space-x-8">
+          <a href="/inicio" class="nav-link font-medium hover:text-green-200">Inicio</a>
+          <a href="/novedades" class="nav-link font-medium hover:text-green-200">Novedades</a>
+          <a href="/trabajos" class="nav-link font-medium hover:text-green-200">Trabajos</a>
+          <a href="/foro" class="nav-link font-medium hover:text-green-200">Foro</a>
+          <a href="/subir-trabajos" class="nav-link font-medium hover:text-green-200">Subir Trabajos</a>
+          <a href="/logout" class="nav-link font-medium hover:text-red-300 hover:font-bold">Cerrar Sesión</a>
+        </div>
+
+        <!-- User Info Desktop -->
+        <div class="hidden md:flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+          <span class="font-semibold">Bienvenido/a, <%= datos1.nomusr %></span>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="hamburger" class="hamburger md:hidden focus:outline-none" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <!-- User Info Mobile -->
+        <div class="md:hidden flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+          <span class="font-semibold text-sm"><%= datos1.nomusr %></span>
+        </div>
       </div>
-      <span class="font-semibold">Bienvenido/a, <%= datos1.nomusr %></span>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="mobile-menu md:hidden">
+        <div class="flex flex-col space-y-3 pt-4 pb-2">
+          <a href="/inicio" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Inicio</a>
+          <a href="/novedades" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Novedades</a>
+          <a href="/trabajos" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Trabajos</a>
+          <a href="/foro" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Foro</a>
+          <a href="/subir-trabajos" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Subir Trabajos</a>
+          <a href="/logout" class="font-medium hover:text-red-300 py-2 px-4 rounded hover:bg-red-600 transition-colors">Cerrar Sesión</a>
+        </div>
+      </div>
     </div>
   </nav>
 
+  <!-- Contenido Principal -->
   <main class="container mx-auto p-6">
-    <h2 class="text-2xl font-bold text-green-800 border-b-2 border-green-800 pb-2 mb-6">Trabajos Subidos</h2>
-    
-    <% if (trabajos.length === 0) { %>
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <p class="text-gray-600 text-center">No hay trabajos subidos aún.</p>
-      </div>
-    <% } else { %>
-      <% trabajos.forEach(trabajo => { %>
-        <div class="bg-white rounded-lg shadow-md p-6 mb-4">
-          <h3 class="text-xl font-bold text-green-800 mb-2"><%= trabajo.titulo %></h3>
-          <p class="text-gray-600 mb-2"><strong>Materia:</strong> <%= trabajo.materia %></p>
-          <p class="text-gray-600 mb-2"><strong>Descripción:</strong> <%= trabajo.descripcion %></p>
-          <p class="text-sm text-gray-500 mb-4">Por <%= trabajo.autor_post %> - <%= new Date(trabajo.fecha_subida).toLocaleDateString('es-ES') %></p>
-          
-          <a href="/<%= trabajo.ruta %>" download="<%= trabajo.nombre_original %>" class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition inline-block">
-            Descargar
-          </a>
-          
-          <% if (datos1.rolusr === "Administrador" || datos1.nomusr === trabajo.autor_post) { %>
-            <form method="POST" action="/eliminartrabajo" class="inline ml-2">
-              <input type="hidden" name="id_post" value="<%= trabajo.id_post %>">
-              <input type="hidden" name="autor_post" value="<%= trabajo.autor_post %>">
-              <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition" onclick="return confirm('¿Estás seguro de eliminar este trabajo?')">
-                ✗ Eliminar
-              </button>
-            </form>
-          <% } %>
+    <!-- Banner de Bienvenida -->
+    <div class="bg-gradient-to-r from-purple-600 to-indigo-500 rounded-2xl shadow-xl p-8 mb-8 text-white animate-fade-in-up">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-3xl font-bold mb-2 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            Biblioteca de Trabajos
+          </h2>
+          <p class="text-lg opacity-90">Explora y descarga los trabajos académicos compartidos por la comunidad estudiantil</p>
         </div>
-      <% }) %>
-    <% } %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 opacity-80 hidden lg:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Estadísticas y Acción Rápida -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg card-hover col-span-1 md:col-span-2">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-4xl font-bold mb-1"><%= trabajos.length %></div>
+            <div class="text-sm opacity-90">Trabajos Disponibles</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+      </div>
+      <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg card-hover col-span-1 md:col-span-2">
+        <a href="/subir-trabajos" class="flex items-center justify-between h-full">
+          <div>
+            <div class="text-xl font-bold mb-2">¿Tienes un trabajo?</div>
+            <div class="text-sm opacity-90">Compártelo con la comunidad →</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Listado de Trabajos -->
+    <section class="animate-fade-in-up" style="animation-delay: 0.1s;">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-3xl font-bold text-gray-800 section-title">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 inline-block mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          Trabajos Compartidos
+        </h2>
+      </div>
+      
+      <div id="works-container" class="space-y-6">
+        <% if (trabajos.length === 0) { %>
+          <div class="bg-white rounded-2xl shadow-lg p-16 text-center empty-state">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32 mx-auto text-gray-300 mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <h3 class="text-3xl font-bold text-gray-400 mb-3">No hay trabajos disponibles</h3>
+            <p class="text-gray-500 text-lg mb-6">Sé el primero en compartir un trabajo académico</p>
+            <a href="/subir-trabajos" class="inline-flex items-center bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              Subir Trabajo
+            </a>
+          </div>
+        <% } else { %>
+          <% trabajos.forEach((trabajo, index) => { %>
+            <article class="work-item work-card rounded-2xl shadow-lg overflow-hidden card-hover" data-materia="<%= trabajo.materia %>" style="animation: fadeInUp 0.6s ease-out <%= index * 0.05 %>s forwards; opacity: 0;">
+              <div class="p-6 md:p-8">
+                <!-- Header -->
+                <div class="flex items-start gap-6 mb-6">
+                  <div class="file-icon flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <div class="flex-1">
+                    <h3 class="text-2xl md:text-3xl font-bold text-green-800 mb-3 hover:text-green-600 transition-colors">
+                      <%= trabajo.titulo %>
+                    </h3>
+                    <div class="subject-badge inline-block px-4 py-2 rounded-lg mb-3">
+                      <span class="text-blue-800 font-semibold text-sm flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        <%= trabajo.materia %>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Descripción -->
+                <div class="mb-6">
+                  <p class="text-gray-700 text-lg leading-relaxed"><%= trabajo.descripcion %></p>
+                </div>
+
+                <!-- Footer -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pt-6 border-t border-gray-200">
+                  <!-- Autor y Fecha -->
+                  <div class="flex items-center gap-4">
+                    <div class="author-avatar">
+                      <%= trabajo.autor_post.charAt(0).toUpperCase() %>
+                    </div>
+                    <div>
+                      <p class="font-semibold text-gray-800"><%= trabajo.autor_post %></p>
+                      <p class="text-sm text-gray-500 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <%= new Date(trabajo.fecha_subida).toLocaleDateString('es-ES', { 
+                          year: 'numeric', 
+                          month: 'long', 
+                          day: 'numeric' 
+                        }) %>
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Acciones -->
+                  <div class="flex gap-3 w-full md:w-auto">
+                    <a 
+                      href="/<%= trabajo.ruta %>" 
+                      download="<%= trabajo.nombre_original %>" 
+                      class="btn-download flex-1 md:flex-none bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-xl hover:from-green-700 hover:to-green-800 font-semibold shadow-lg flex items-center justify-center relative z-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Descargar
+                    </a>
+                    
+                    <% if (datos1.rolusr === "Administrador" || datos1.nomusr === trabajo.autor_post) { %>
+                      <form method="POST" action="/eliminartrabajo" class="flex-1 md:flex-none">
+                        <input type="hidden" name="id_post" value="<%= trabajo.id_post %>">
+                        <input type="hidden" name="autor_post" value="<%= trabajo.autor_post %>">
+                        <button 
+                          type="submit" 
+                          class="btn-delete w-full bg-red-600 text-white px-6 py-3 rounded-xl hover:bg-red-700 font-semibold shadow-lg flex items-center justify-center" 
+                          onclick="return confirm('¿Estás seguro de eliminar este trabajo?')">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                          Eliminar
+                        </button>
+                      </form>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+            </article>
+          <% }) %>
+        <% } %>
+      </div>
+    </section>
   </main>
 
-  <footer class="bg-green-900 text-white py-6 px-6">
-    <div class="container mx-auto text-center">
-      <p class="mb-2">© 2025 Periódico Escolar - I.E. COMFAMILIAR</p>
-    </div>
-  </footer>
-</body>
-</html>
+  <!-- Pie de Página -->
+  <footer class="bg-gradient-to-r from-green-900 via-green-800 to-green-900 text-white py-8 px-6 mt-12">
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+        <div>
+          <h3 class="text-xl font-bold mb-3">I.E. COMFAMILIAR</h3>
+          <p class="text-sm opacity-80">Formando líderes con valores para construir un futuro mejor.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-3">Recursos</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/trabajos" class="hover:text-green-300 transition-colors">Biblioteca de Trabajos</a></li>
+            <li><a href="/subir-trabajos" class="hover:text-green-300 transition-colors">Subir Trabajo</a></li>
+            <li><a href="/foro" class="hover:text-green-300 transition-colors">Foro Estudiantil</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-3">Ayuda</h3>
+          <p class="text-sm opacity-80">¿Problemas con las descargas?</p>
+          <p class="text-sm opacity-80 mt-2">Contacta al soporte téc

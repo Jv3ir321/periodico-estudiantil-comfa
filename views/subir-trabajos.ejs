@@ -5,86 +5,479 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Subir Trabajos - I.E. COMFAMILIAR</title>
   <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" href="/logo2.png">
-
+  <link rel="icon" href="/logo2.png">
   <style>
-    #logocabeza{
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .animate-fade-in-up {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .animate-slide-in {
+      animation: slideInRight 0.6s ease-out forwards;
+    }
+
+    .logo-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    #logocabeza {
       height: 180px;
       margin-top: -40px;
       margin-bottom: -40px;
+      margin-right: 85px;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .input-focus {
+      transition: all 0.3s ease;
+    }
+
+    .input-focus:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(16, 185, 129, 0.2);
+    }
+
+    .file-upload {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .file-upload:hover {
+      border-color: #10b981;
+      background-color: #f0fdf4;
+    }
+
+    .file-upload input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .btn-submit {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-submit:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4);
+    }
+
+    /* Responsive Menu */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .mobile-menu.active {
+      max-height: 500px;
+      transition: max-height 0.4s ease-in;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: white;
+      margin: 5px 0;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .info-card {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border-left: 4px solid #10b981;
+    }
+
+    .file-selected {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      border-color: #10b981;
     }
   </style>
 </head>
-<body class="bg-gray-100 font-sans">
-  <header class="bg-green-800 text-white py-4 px-6 shadow-md">
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 font-sans">
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const hamburger = document.getElementById('hamburger');
+      menu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    }
+
+    function updateFileName(input) {
+      const label = document.getElementById('file-label');
+      const preview = document.getElementById('file-preview');
+      
+      if (input.files && input.files[0]) {
+        const fileName = input.files[0].name;
+        const fileSize = (input.files[0].size / 1024 / 1024).toFixed(2);
+        
+        label.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-600 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p class="text-green-700 font-semibold">${fileName}</p>
+          <p class="text-green-600 text-sm">${fileSize} MB</p>
+          <p class="text-green-500 text-xs mt-2">Click para cambiar archivo</p>
+        `;
+        label.classList.add('file-selected');
+        preview.classList.remove('hidden');
+      }
+    }
+  </script>
+
+  <!-- Encabezado -->
+  <header class="bg-gradient-to-r from-green-800 via-green-700 to-green-800 text-white py-4 px-6 shadow-2xl">
     <div class="container mx-auto flex justify-between items-center">
-      <div>
-        <h1 class="text-3xl font-bold">I.E. COMFAMILIAR</h1>
-        <p class="text-sm">Subir Trabajos Escolares</p>
+      <div class="animate-slide-in">
+        <h1 class="text-4xl font-bold tracking-tight">I.E. COMFAMILIAR</h1>
+        <p class="text-sm mt-1 opacity-90">Subir Trabajos Escolares</p>
       </div>
-      <div class="items-center">
-        <a href="index.html"><img src="logo2.png" id="logocabeza"></a>
+      <div class="items-center logo-float">
+        <a href="index.html" class="block transition-transform hover:scale-105">
+          <img src="logo2.png" id="logocabeza" alt="Logo Comfamiliar">
+        </a>
       </div>
-      <div class="text-right">
-        <p class="text-sm">Año 2025 - Edición #1</p>
-        <p class="text-sm">"Educación con valores para el futuro"</p>
+      <div class="text-right animate-slide-in hidden md:block">
+        <p class="text-sm font-semibold">Año 2025 - Edición #1</p>
+        <p class="text-sm mt-1 italic opacity-90">"Educación con valores para el futuro"</p>
       </div>
     </div>
   </header>
 
- <!-- Barra de Navegación -->
-  <nav class="bg-green-700 text-white py-2 px-6 shadow-sm">
-    <div class="container mx-auto flex justify-between items-center">
-      <div class="flex space-x-6">
-        <a href="/inicio" class="hover:underline">Inicio</a>
-        <a href="/novedades" class="hover:underline">Novedades</a>
-        <a href="/foro" class="hover:underline">Foro</a>
-        <a href="/trabajos" class="hover:underline">Trabajos</a>
-        <a href="/logout" class="hover:text-red-400 hover:font-semibold">Cerrar Sesión</a>
+  <!-- Barra de Navegación -->
+  <nav class="bg-green-700 text-white py-3 px-6 shadow-lg sticky top-0 z-50 glass-effect bg-opacity-95">
+    <div class="container mx-auto">
+      <div class="flex justify-between items-center">
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex space-x-8">
+          <a href="/inicio" class="nav-link font-medium hover:text-green-200">Inicio</a>
+          <a href="/novedades" class="nav-link font-medium hover:text-green-200">Novedades</a>
+          <a href="/foro" class="nav-link font-medium hover:text-green-200">Foro</a>
+          <a href="/trabajos" class="nav-link font-medium hover:text-green-200">Trabajos</a>
+          <a href="/logout" class="nav-link font-medium hover:text-red-300 hover:font-bold">Cerrar Sesión</a>
+        </div>
+
+        <!-- User Info Desktop -->
+        <div class="hidden md:flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+          <span class="font-semibold">Bienvenido/a, <%= datos1.nomusr %></span>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="hamburger" class="hamburger md:hidden focus:outline-none" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <!-- User Info Mobile -->
+        <div class="md:hidden flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+          <span class="font-semibold text-sm"><%= datos1.nomusr %></span>
+        </div>
       </div>
-      <span class="font-semibold">Bienvenido/a, <%= datos1.nomusr %></span>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="mobile-menu md:hidden">
+        <div class="flex flex-col space-y-3 pt-4 pb-2">
+          <a href="/inicio" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Inicio</a>
+          <a href="/novedades" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Novedades</a>
+          <a href="/foro" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Foro</a>
+          <a href="/trabajos" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Trabajos</a>
+          <a href="/logout" class="font-medium hover:text-red-300 py-2 px-4 rounded hover:bg-red-600 transition-colors">Cerrar Sesión</a>
+        </div>
+      </div>
     </div>
   </nav>
 
+  <!-- Contenido Principal -->
   <main class="container mx-auto p-6">
-    <h2 class="text-2xl font-bold text-green-800 border-b-2 border-green-800 pb-2 mb-6">Subir Trabajo Escolar</h2>
+    <!-- Banner Informativo -->
+    <div class="bg-gradient-to-r from-blue-600 to-blue-500 rounded-2xl shadow-xl p-8 mb-8 text-white animate-fade-in-up">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-3xl font-bold mb-2 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            Compartir Trabajo Escolar
+          </h2>
+          <p class="text-lg opacity-90">Sube tus trabajos y proyectos al repositorio del periódico escolar</p>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 opacity-80 hidden lg:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Tarjeta Informativa -->
+    <div class="info-card rounded-xl p-6 mb-8 animate-fade-in-up" style="animation-delay: 0.1s;">
+      <div class="flex items-start">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600 mr-3 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div>
+          <h3 class="font-bold text-green-800 mb-2">Información Importante</h3>
+          <ul class="text-sm text-gray-700 space-y-1">
+            <li>• Formatos aceptados: PDF, Word (.docx)</li>
+            <li>• Tamaño máximo: 10 MB por archivo</li>
+            <li>• Asegúrate de que el trabajo esté completo y revisado</li>
+            <li>• Los trabajos serán revisados antes de ser publicados</li>
+          </ul>
+        </div>
+      </div>
+    </div>
     
-    <div class="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto">
+    <!-- Formulario de Subida -->
+    <div class="bg-white rounded-2xl shadow-xl p-8 md:p-10 max-w-3xl mx-auto animate-fade-in-up" style="animation-delay: 0.2s;">
+      <div class="text-center mb-8">
+        <div class="inline-block bg-green-100 p-4 rounded-full mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <h2 class="text-3xl font-bold text-green-800 mb-2">Formulario de Entrega</h2>
+        <p class="text-gray-600">Completa todos los campos para subir tu trabajo</p>
+      </div>
+
       <form method="post" action="/upload" enctype="multipart/form-data">
-        <div class="mb-4">
-
-          <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Titulo</label>
-          <input type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" name="titulotrab">
+        <!-- Título -->
+        <div class="mb-6">
+          <label class="block text-gray-700 font-semibold mb-3 flex items-center text-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+            </svg>
+            Título del Trabajo
+          </label>
+          <input 
+            type="text" 
+            class="input-focus w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-lg" 
+            name="titulotrab"
+            placeholder="Ej: Ensayo sobre la Independencia de Colombia"
+            required>
         </div>
 
-        <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Materia</label>
-          <input type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" name="materia">
+        <!-- Materia -->
+        <div class="mb-6">
+          <label class="block text-gray-700 font-semibold mb-3 flex items-center text-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            Materia o Asignatura
+          </label>
+          <input 
+            type="text" 
+            class="input-focus w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-lg" 
+            name="materia"
+            placeholder="Ej: Historia de Colombia"
+            required>
         </div>
 
-        <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Descripcion del trabajo</label>
-          <textarea class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" name="trabajodesc"></textarea>
+        <!-- Descripción -->
+        <div class="mb-6">
+          <label class="block text-gray-700 font-semibold mb-3 flex items-center text-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+            </svg>
+            Descripción del Trabajo
+          </label>
+          <textarea 
+            class="input-focus w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-lg" 
+            name="trabajodesc"
+            rows="5"
+            placeholder="Describe brevemente el contenido y objetivo de tu trabajo..."
+            required></textarea>
+          <p class="text-sm text-gray-500 mt-2">Mínimo 50 caracteres</p>
         </div>
 
-
-        <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Archivo (PDF, Word, etc.)</label>
-          <input type="file" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document application/pdf" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" name="archivostrab">
+        <!-- Subir Archivo -->
+        <div class="mb-8">
+          <label class="block text-gray-700 font-semibold mb-3 flex items-center text-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+            </svg>
+            Archivo del Trabajo
+          </label>
+          <div id="file-label" class="file-upload border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            <p class="text-gray-600 font-semibold mb-2">Click para seleccionar archivo</p>
+            <p class="text-gray-500 text-sm">o arrastra y suelta aquí</p>
+            <p class="text-gray-400 text-xs mt-2">PDF o DOCX (máx. 10MB)</p>
+            <input 
+              type="file" 
+              accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf" 
+              name="archivostrab"
+              
+              required>
+          </div>
+          <div id="file-preview" class="hidden mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+            <p class="text-green-700 text-sm flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              Archivo cargado correctamente
+            </p>
+          </div>
         </div>
 
-        <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition">
-          Subir Trabajo
-        </button>
+        <!-- Botones -->
+        <div class="flex flex-col sm:flex-row gap-4">
+          <button 
+            type="submit" 
+            class="btn-submit flex-1 bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-4 rounded-xl hover:from-green-700 hover:to-green-800 font-semibold text-lg shadow-lg flex items-center justify-center relative z-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            Subir Trabajo
+          </button>
+          <button 
+            type="reset" 
+            class="flex-1 sm:flex-none bg-gray-200 text-gray-700 px-8 py-4 rounded-xl hover:bg-gray-300 font-semibold text-lg shadow-md transition-all flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Limpiar
+          </button>
+        </div>
       </form>
+    </div>
+
+    <!-- Sección de Ayuda -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 max-w-3xl mx-auto">
+      <div class="bg-white rounded-xl p-6 shadow-md text-center">
+        <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <h3 class="font-bold text-gray-800 mb-2">Formato</h3>
+        <p class="text-sm text-gray-600">PDF o Word únicamente</p>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-md text-center">
+        <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <h3 class="font-bold text-gray-800 mb-2">Seguro</h3>
+        <p class="text-sm text-gray-600">Tus archivos están protegidos</p>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-md text-center">
+        <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h3 class="font-bold text-gray-800 mb-2">Rápido</h3>
+        <p class="text-sm text-gray-600">Subida instantánea</p>
+      </div>
     </div>
   </main>
 
-  <footer class="bg-green-900 text-white py-6 px-6">
-    <div class="container mx-auto text-center">
-      <p class="mb-2">© 2025 Periódico Escolar - I.E. COMFAMILIAR</p>
-    </div>
-  </footer>
-</body>
-</html>
+  <!-- Pie de Página -->
+  <footer class="bg-gradient-to-r from-green-900 via-green-800 to-green-900 text-white py-8 px-6 mt-12">
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+        <div>
+          <h3 class="text-xl font-bold mb-3">I.E. COMFAMILIAR</h3>
+          <p class="text-sm opacity-80">Formando líderes con valores para construir un futuro mejor.</p>

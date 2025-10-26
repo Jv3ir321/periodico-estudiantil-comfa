@@ -40,9 +40,19 @@ LOCK TABLES `CATEGORIAS` WRITE;
 /*!40000 ALTER TABLE `CATEGORIAS` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `NOVEDADES`
---
+
+
+CREATE TABLE IF NOT EXISTS RESPUESTAS_FORO (
+  id_respuesta INT PRIMARY KEY AUTO_INCREMENT,
+  id_publicacion INT NOT NULL,
+  autor_respuesta VARCHAR(10),
+  contenido_respuesta VARCHAR(400),
+  fecha_respuesta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_publicacion) REFERENCES PUBLICACIONES (id_publicacion) ON DELETE CASCADE
+);
+
+
+
 
 DROP TABLE IF EXISTS `NOVEDADES`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
