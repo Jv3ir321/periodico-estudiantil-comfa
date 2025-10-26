@@ -72,6 +72,10 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.set('views', path.join(__dirname, 'views'));
 app.set("view engine", "ejs");
 
+if (process.env.NODE_ENV !== 'production') {
+    app.disable('view cache');
+}
+
 // ========== RUTAS GET ==========
 // Middleware de autenticación
 const requireLogin = (req, res, next) => {
@@ -202,8 +206,28 @@ app.get("/reqadmin", (req, res) => {
         res.redirect("/inicio")
     }
 })
+// 26/10/25 Detalle de publicación en foro  feat(server.js) -Se agrega ruta para detalle de publicacion -Se agrega vista foro-detalle.ejs
+app.get("/foro/:nombre_publicacion", (req, res) => {
+    if (!req.session.login) {
+        res.redirect("/")
+    } else {
+        const consulta = "SELECT * FROM PUBLICACIONES WHERE nombre_publicacion = ?";
 
+        conexion.query(consulta, [req.params.nombre_publicacion], (err, rows) => {
+            if (err) {
+                console.log("Error al obtener publicación:", err)
+                return res.status(500).send("Error al cargar publicación")
+            }
 
+            publicacion = rows[0]
+
+            if (!publicacion) {
+                return res.status(404).send("Publicación no encontrada")
+            }
+            res.render("foro-detalle", {datos1: req.session, publicacion: publicacion})
+        })
+    }
+})
 
 
 // ========== RUTAS POST ==========
@@ -618,11 +642,7 @@ app.post("/guardar-cambios", (req, res) => {
 });
 
 
-
-
-
-
-
-app.listen(4000, () => {
-    console.log("Servidor creado en http://localhost:4000")
+// ========== INICIAR SERVIDOR ==========   
+app.listen(5500, () => {
+    console.log(`Servidor creado en http://localhost:5500`);
 });

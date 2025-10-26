@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foro Estudiantil - I.E. COMFAMILIAR</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="/logo2.png">
+
+  <style>
+    #logocabeza{
+      height: 180px;
+      margin-top: -40px;
+      margin-bottom: -40px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="bg-green-800 text-white py-4 px-6 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold">I.E. COMFAMILIAR</h1>
+        <p class="text-sm">Foro Estudiantil</p>
+      </div>
+      <div class="items-center">
+        <a href="/inicio"><img src="/logo2.png" id="logocabeza"></a>
+      </div>
+      <div class="text-right">
+        <p class="text-sm">Año 2025 - Edición #1</p>
+        <p class="text-sm">"Educación con valores para el futuro"</p>
+      </div>
+    </div>
+  </header>
+
+   <!-- Barra de Navegación -->
+  <nav class="bg-green-700 text-white py-2 px-6 shadow-sm">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex space-x-6">
+        <a href="/inicio" class="hover:underline">Inicio</a>
+        <a href="/novedades" class="hover:underline">Novedades</a>
+        <a href="/trabajos" class="hover:underline">Trabajos</a>
+        <a href="/foro" class="hover:underline">Foro</a>
+        <a href="/subir-trabajos" class="hover:underline">Subir Trabajos</a>
+        <a href="/logout" class="hover:text-red-400 hover:font-semibold">Cerrar Sesión</a>
+      </div>
+      <span class="font-semibold">Bienvenido/a, <%= datos1.nomusr %></span>
+    </div>
+  </nav>
+
+  <main class="container mx-auto p-6">
+  <h2 class="text-2xl font-bold text-green-800 border-b-2 border-green-800 pb-2 mb-6">Detalle de la Publicación</h2>
+
+<section id="posts">
+  <div class="space-y-4">
+    <% if (publicacion) { %>
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-2xl font-bold text-green-800 mb-2"><%= publicacion.nombre_publicacion %></h3>
+        <p class="text-gray-700 mb-4"><%= publicacion.contenido_publicacion %></p>
+
+        <div class="flex justify-between items-center text-sm text-gray-500">
+          <div>
+            <span>Publicado por: <%= publicacion.autor_publicacion %></span>
+            <% if (publicacion.fecha_publicacion) { %>
+              <span class="ml-4"><%= new Date(publicacion.fecha_publicacion).toLocaleDateString('es-ES') %></span>
+            <% } %>
+          </div>
+
+          <% if (datos1 && (datos1.rolusr === "Administrador" || datos1.nomusr === publicacion.autor_publicacion)) { %>
+            <div class="flex space-x-2">
+              <form method="POST" action="/editar-post" class="inline">
+                <input type="hidden" name="id_publicacion" value="<%= publicacion.id_publicacion %>">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Editar</button>
+              </form>
+
+              <form method="POST" action="/eliminar" class="inline" onsubmit="return confirm('¿Eliminar esta publicación?')">
+                <input type="hidden" name="id_publicacion" value="<%= publicacion.id_publicacion %>">
+                <input type="hidden" name="autor_publicacion" value="<%= publicacion.autor_publicacion %>">
+                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">Eliminar</button>
+              </form>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="bg-white rounded-lg shadow-md p-6 text-center text-gray-500">
+        <p>Publicación no encontrada.</p>
+      </div>
+    <% } %>
+  </div>
+
+  <a href="/foro" class="inline-block mt-4 text-green-700 hover:text">← Volver al foro</a>
+</section>
+
+  <footer class="bg-green-900 text-white py-6 px-6">
+    <div class="container mx-auto text-center">
+      <p class="mb-2">© 2025 Periódico Escolar - I.E. COMFAMILIAR</p>
+    </div>
+  </footer>
+</body>
+<script>
+
+//const form = document.getElementById("form")
+//const postsSection = document.getElementById("posts")
+//const postsId = Date.now()
+
+//form.addEventListener("submit", function(e){
+ // e.preventDefault()
+ // const title = document.getElementById("title").value.trim();
+ // const content = document.getElementById("content").value.trim();
+
+ // if (title && content) {
+   // const post = document.createElement("div")
+   // post.className = "bg-white rounded-lg shadow-md p-6 mb-6"
+    // post.innerHTML = `
+      //          <h3 class="text-xl font-bold text-green-800 mb-2">${title}</h3>
+       //         <p class="text-gray-700 mb-3">${content}</p>
+       //         <div class="flex justify-between text-sm text-gray-500"><em>Publicado Por: </em></div>
+       //     `;
+      //      postsSection.prepend(post);
+    //        form.reset();
+  //}
+
+//})
+
+
+
+</script>
+
+
+</html>

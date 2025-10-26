@@ -8,67 +8,281 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="script.js"></script>
   <style>
-    #logocabeza{
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .animate-fade-in-up {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .animate-slide-in {
+      animation: slideInRight 0.6s ease-out forwards;
+    }
+
+    .logo-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(-45deg, #065f46, #047857, #059669, #10b981);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+    }
+
+    .input-focus {
+      transition: all 0.3s ease;
+    }
+
+    .input-focus:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(16, 185, 129, 0.2);
+    }
+
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    #logocabeza {
       height: 180px;
       margin-top: -40px;
       margin-bottom: -40px;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .login-card {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+    }
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .btn-submit {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-submit:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4);
+    }
+
+    .decorative-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.1;
+      pointer-events: none;
+    }
+
+    .circle-1 {
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      top: -200px;
+      right: -200px;
+    }
+
+    .circle-2 {
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, #059669, #047857);
+      bottom: -150px;
+      left: -150px;
     }
   </style>
 </head>
-<body class="bg-gray-100 font-sans">
-  <header class="bg-green-800 text-white py-4 px-6 shadow-md">
-    <div class="container mx-auto flex justify-between items-center">     
-      <div>
-        <h1 class="text-3xl font-bold">I.E. COMFAMILIAR</h1>
-        <p class="text-sm">Iniciar Sesión</p>
+<body class="font-sans gradient-bg min-h-screen">
+
+  <!-- Encabezado -->
+  <header class="bg-gradient-to-r from-green-900 via-green-800 to-green-900 text-white py-4 px-6 shadow-2xl">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="animate-slide-in">
+        <h1 class="text-4xl font-bold tracking-tight">I.E. COMFAMILIAR</h1>
+        <p class="text-sm mt-1 opacity-90">Iniciar Sesión</p>
       </div>
-       <div class="items-center">
-        <a href="/inicio"><img src="logo2.png" id="logocabeza"></a>
+      <div class="items-center logo-float">
+        <a href="/inicio" class="block transition-transform hover:scale-105">
+          <img src="logo2.png" id="logocabeza" alt="Logo Comfamiliar">
+        </a>
       </div>
-      <div class="text-right">
-        <p class="text-sm">Año 2025 - Edición #1</p>
-        <p class="text-sm">"Educación con valores para el futuro"</p>
+      <div class="text-right animate-slide-in hidden md:block">
+        <p class="text-sm font-semibold">Año 2025 - Edición #1</p>
+        <p class="text-sm mt-1 italic opacity-90">"Educación con valores para el futuro"</p>
       </div>
     </div>
   </header>
 
-  <nav class="bg-green-700 text-white py-2 px-6 shadow-sm">
-    <div class="container mx-auto flex space-x-6">
-      <a href="/inicio" class="hover:underline">Inicio</a>
-      <a href="/novedades" class="hover:underline">Novedades</a>
-      <a href="/foro" class="hover:underline">Foro</a>
-      <a href="/subir-trabajos" class="hover:underline">Subir Trabajos</a>
-    </div>
-  </nav>
+  <!-- Contenido Principal -->
+  <main class="container mx-auto p-6 flex justify-center items-center min-h-[calc(100vh-220px)] relative">
+    <!-- Círculos decorativos -->
+    <div class="decorative-circle circle-1"></div>
+    <div class="decorative-circle circle-2"></div>
 
-  <main class="container mx-auto p-6 flex justify-center">
-    <div class="bg-white rounded-lg shadow-md p-8 max-w-md w-full">
-      <h2 class="text-2xl font-bold text-green-800 mb-6 text-center">Iniciar Sesión</h2>
+    <!-- Formulario de Login -->
+    <div class="login-card rounded-2xl shadow-2xl p-8 md:p-10 max-w-md w-full animate-fade-in-up relative z-10">
+      <!-- Icono de Usuario -->
+      <div class="flex justify-center mb-6">
+        <div class="bg-gradient-to-br from-green-500 to-green-700 rounded-full p-6 shadow-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </div>
+      </div>
+
+      <h2 class="text-3xl font-bold text-green-800 mb-2 text-center">Bienvenido</h2>
+      <p class="text-gray-600 text-center mb-8">Inicia sesión para continuar</p>
       
       <form id="formulario" action="/verLogin" method="post">
-        <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Correo</label>
-          <input type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" id="usr" name="correo">
-        </div>
-
+        <!-- Campo Correo -->
         <div class="mb-6">
-          <label class="block text-gray-700 font-bold mb-2">Contraseña</label>
-          <input type="password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" id="pswd" name="contraseña">
+          <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+            </svg>
+            Correo Electrónico
+          </label>
+          <input 
+            type="text" 
+            class="input-focus w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all" 
+            id="usr" 
+            name="correo"
+            placeholder="correo@ejemplo.com"
+            required>
         </div>
 
-        <button type="submit" class="w-full bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition mb-4">
+        <!-- Campo Contraseña -->
+        <div class="mb-6">
+          <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            Contraseña
+          </label>
+          <input 
+            type="password" 
+            class="input-focus w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all" 
+            id="pswd" 
+            name="contraseña"
+            placeholder="••••••••"
+            required>
+        </div>
+
+        <!-- Botón Ingresar -->
+        <button 
+          type="submit" 
+          class="btn-submit w-full bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-3 rounded-xl font-semibold text-lg shadow-lg mb-4 relative z-0">
           Ingresar
         </button>
-        <p class="text-center"><a href="pasfor.html" class="text-green-700 hover:underline">Olvidé mi Contraseña</a></p>
+
+        <!-- Olvidé mi Contraseña -->
+        <p class="text-center">
+          <a href="pasfor.html" class="text-green-700 hover:text-green-800 font-medium hover:underline transition-colors flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            ¿Olvidaste tu contraseña?
+          </a>
+        </p>
       </form>
+
+      <!-- Divider -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <p class="text-center text-sm text-gray-600">
+          ¿Necesitas ayuda? 
+          <a href="/foro" class="text-green-600 hover:text-green-700 font-medium">Contacta soporte</a>
+        </p>
+      </div>
     </div>
   </main>
 
-  <footer class="bg-green-900 text-white py-6 px-6 fixed inset-x-0 bottom-0">
-    <div class="container mx-auto text-center">
-      <p class="mb-2">© 2025 Periódico Escolar - I.E. COMFAMILIAR</p>
+  <!-- Pie de Página -->
+  <footer class="bg-gradient-to-r from-green-900 via-green-800 to-green-900 text-white py-6 px-6 mt-12">
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+        <div class="text-center md:text-left">
+          <h3 class="text-lg font-bold mb-2">I.E. COMFAMILIAR</h3>
+          <p class="text-sm opacity-80">Educación con valores</p>
+        </div>
+        <div class="text-center">
+          <h3 class="text-lg font-bold mb-2">Enlaces</h3>
+          <div class="flex justify-center space-x-4 text-sm">
+            <a href="/inicio" class="hover:text-green-300 transition-colors">Inicio</a>
+            <a href="/novedades" class="hover:text-green-300 transition-colors">Novedades</a>
+            <a href="/foro" class="hover:text-green-300 transition-colors">Foro</a>
+          </div>
+        </div>
+        <div class="text-center md:text-right">
+          <p class="text-sm opacity-80">© 2025 Periódico Escolar</p>
+          <p class="text-sm opacity-80">I.E. COMFAMILIAR</p>
+        </div>
+      </div>
     </div>
   </footer>
-
+  
 </body>
 </html>
