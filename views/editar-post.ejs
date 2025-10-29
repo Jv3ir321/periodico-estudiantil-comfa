@@ -3,71 +3,439 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Foro Estudiantil - I.E. COMFAMILIAR</title>
+  <title>Editar Publicación - I.E. COMFAMILIAR</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="/logo2.png">
   <style>
-    #logocabeza{
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .animate-fade-in-up {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .animate-slide-in {
+      animation: slideInRight 0.6s ease-out forwards;
+    }
+
+    .card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .logo-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    #logocabeza {
       height: 180px;
       margin-top: -40px;
       margin-bottom: -40px;
+      margin-right: 85px;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .section-title {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 12px;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981, #059669);
+      border-radius: 2px;
+    }
+
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .mobile-menu.active {
+      max-height: 500px;
+      transition: max-height 0.4s ease-in;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: white;
+      margin: 5px 0;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    .input-field {
+      transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+    }
+
+    .btn-primary {
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-secondary {
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 20px rgba(107, 114, 128, 0.4);
+    }
+
+    .form-container {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    label {
+      transition: color 0.3s ease;
+    }
+
+    .input-field:focus + label {
+      color: #10b981;
     }
   </style>
 </head>
-<body class="bg-gray-100 font-sans">
-  <header class="bg-green-800 text-white py-4 px-6 shadow-md">
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 font-sans">
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const hamburger = document.getElementById('hamburger');
+      menu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    }
+  </script>
+
+  <!-- Encabezado -->
+  <header class="bg-gradient-to-r from-green-800 via-green-700 to-green-800 text-white py-4 px-6 shadow-2xl">
     <div class="container mx-auto flex justify-between items-center">
-      <div>
-        <h1 class="text-3xl font-bold">I.E. COMFAMILIAR</h1>
-        <p class="text-sm">Foro Estudiantil</p>
+      <div class="animate-slide-in">
+        <h1 class="text-4xl font-bold tracking-tight">I.E. COMFAMILIAR</h1>
+        <p class="text-sm mt-1 opacity-90">Foro Estudiantil - Editar Publicación</p>
       </div>
-      <div class="items-center">
-        <a href="index.html"><img src="logo2.png" id="logocabeza"></a>
+      <div class="items-center logo-float">
+        <a href="/index" class="block transition-transform hover:scale-105">
+          <img src="/logo2.png" id="logocabeza" alt="Logo Comfamiliar">
+        </a>
       </div>
-      <div class="text-right">
-        <p class="text-sm">Año 2025 - Edición #1</p>
-        <p class="text-sm">"Educación con valores para el futuro"</p>
+      <div class="text-right animate-slide-in">
+        <p class="text-sm font-semibold">Año 2025 - Edición #1</p>
+        <p class="text-sm mt-1 italic opacity-90">"Educación con valores para el futuro"</p>
       </div>
     </div>
   </header>
 
-  <nav class="bg-green-700 text-white py-2 px-6 shadow-sm">
-    <div class="container mx-auto flex space-x-6">
-      <a href="index.html" class="hover:underline">Inicio</a>
-      <a href="novedades.html" class="hover:underline">Novedades</a>
-      <a href="foro.html" class="hover:underline font-bold">Foro</a>
-      <a href="subir-trabajos.html" class="hover:underline">Subir Trabajos</a>
-      <a href="login.html" class="hover:underline">Login</a>
+  <!-- Barra de Navegación -->
+  <nav class="bg-green-700 text-white py-3 px-6 shadow-lg sticky top-0 z-50 glass-effect bg-opacity-95">
+    <div class="container mx-auto">
+      <div class="flex justify-between items-center">
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex space-x-8">
+          <a href="/inicio" class="nav-link font-medium hover:text-green-200">Inicio</a>
+          <a href="/novedades" class="nav-link font-medium hover:text-green-200">Novedades</a>
+          <a href="/trabajos" class="nav-link font-medium hover:text-green-200">Trabajos</a>
+          <a href="/foro" class="nav-link font-medium hover:text-green-200">Foro</a>
+          <a href="/subir-trabajos" class="nav-link font-medium hover:text-green-200">Subir Trabajos</a>
+          <a href="/logout" class="nav-link font-medium hover:text-red-300 hover:font-bold">Cerrar Sesión</a>
+        </div>
+
+        <!-- User Info Desktop -->
+        <div class="hidden md:flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+          <span class="font-semibold">Bienvenido/a, <%= datos1.nomusr %></span>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="hamburger" class="hamburger md:hidden focus:outline-none" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <!-- User Info Mobile -->
+        <div class="md:hidden flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+          <span class="font-semibold text-sm"><%= datos1.nomusr %></span>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="mobile-menu md:hidden">
+        <div class="flex flex-col space-y-3 pt-4 pb-2">
+          <a href="/inicio" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Inicio</a>
+          <a href="/novedades" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Novedades</a>
+          <a href="/trabajos" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Trabajos</a>
+          <a href="/foro" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Foro</a>
+          <a href="/subir-trabajos" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Subir Trabajos</a>
+          <a href="/logout" class="font-medium hover:text-red-300 py-2 px-4 rounded hover:bg-red-600 transition-colors">Cerrar Sesión</a>
+        </div>
+      </div>
     </div>
   </nav>
 
+  <!-- Contenido Principal -->
   <main class="container mx-auto p-6">
-    <h2 class="text-2xl font-bold text-green-800 border-b-2 border-green-800 pb-2 mb-6">Editar Publicacion</h2>
-    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-      <form id="form" method="post" action="/guardar-cambios">
-        <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Editar Título</label>
-          <input name="nuevo_titulo" type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" id="title">
+    <!-- Banner de Bienvenida -->
+    <div class="bg-gradient-to-r from-green-600 to-emerald-500 rounded-2xl shadow-xl p-8 mb-8 text-white animate-fade-in-up">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-3xl font-bold mb-2">Editar Publicación</h2>
+          <p class="text-lg opacity-90">Modifica el contenido de tu publicación</p>
         </div>
-
-        <div class="mb-4">
-          <label class="block text-gray-700 font-bold mb-2">Editar Mensaje</label>
-          <textarea name="nuevo_contenido" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" rows="4" id="content"></textarea>
-        </div>
-
-        <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition">
-            Guardar Cambios
-        </button>
-      </form>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+      </div>
     </div>
-    </main>
 
+    <!-- Formulario de Edición -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden form-container animate-fade-in-up" style="animation-delay: 0.2s;">
+      <div class="p-8 md:p-12">
+        <h3 class="text-2xl font-bold text-gray-800 mb-8 section-title">Detalles de la Publicación</h3>
+        
+        <form id="form" method="post" action="/guardar-cambios" class="space-y-8">
+          <!-- Campo: Título -->
+          <div class="group">
+            <label for="title" class="block text-gray-700 font-bold mb-3 text-lg flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+              </svg>
+              Título de la Publicación
+            </label>
+            <input 
+              name="nuevo_titulo" 
+              type="text" 
+              id="title"
+              placeholder="Ingresa un título descriptivo para tu publicación"
+              class="input-field w-full px-5 py-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 text-lg"
+              required
+            >
+            <p class="mt-2 text-sm text-gray-500">Escribe un título claro y atractivo que describa tu publicación</p>
+          </div>
 
-  <footer class="bg-green-900 text-white py-6 px-6">
-    <div class="container mx-auto text-center">
-      <p class="mb-2">© 2025 Periódico Escolar - I.E. COMFAMILIAR</p>
+          <!-- Campo: Contenido -->
+          <div class="group">
+            <label for="content" class="block text-gray-700 font-bold mb-3 text-lg flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm11 1H6v8l4-2 4 2V6z" clip-rule="evenodd" />
+              </svg>
+              Contenido de la Publicación
+            </label>
+            <textarea 
+              name="nuevo_contenido" 
+              id="content"
+              rows="8"
+              placeholder="Escribe aquí el contenido completo de tu publicación..."
+              class="input-field w-full px-5 py-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 text-lg resize-none"
+              required
+            ></textarea>
+            <p class="mt-2 text-sm text-gray-500">Desarrolla tu idea con detalle. Recuerda ser claro y conciso</p>
+          </div>
+
+          <!-- Vista Previa (Opcional - solo visual) -->
+          <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border-2 border-blue-200">
+            <div class="flex items-center mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <h4 class="text-lg font-bold text-blue-800">Nota Importante</h4>
+            </div>
+            <p class="text-blue-700 leading-relaxed">
+              Tu publicación será revisada por un administrador antes de ser publicada. Asegúrate de que el contenido sea apropiado y relevante para la comunidad estudiantil.
+            </p>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="flex flex-col sm:flex-row gap-4 pt-6">
+            <button 
+              type="submit" 
+              class="btn-primary flex-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>Guardar Cambios</span>
+            </button>
+            
+            <a 
+              href="/foro" 
+              class="btn-secondary flex-1 bg-gradient-to-r from-gray-500 to-gray-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 text-center"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              <span>Cancelar</span>
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Consejos de Escritura -->
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-xl shadow-md p-6 card-hover animate-fade-in-up" style="animation-delay: 0.3s;">
+        <div class="flex items-center mb-4">
+          <div class="bg-green-100 rounded-full p-3 mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h4 class="text-lg font-bold text-gray-800">Sé Claro</h4>
+        </div>
+        <p class="text-gray-600">Utiliza un lenguaje sencillo y directo para que todos puedan entender tu mensaje</p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-md p-6 card-hover animate-fade-in-up" style="animation-delay: 0.4s;">
+        <div class="flex items-center mb-4">
+          <div class="bg-blue-100 rounded-full p-3 mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <h4 class="text-lg font-bold text-gray-800">Sé Respetuoso</h4>
+        </div>
+        <p class="text-gray-600">Mantén un tono cordial y respetuoso con toda la comunidad educativa</p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-md p-6 card-hover animate-fade-in-up" style="animation-delay: 0.5s;">
+        <div class="flex items-center mb-4">
+          <div class="bg-purple-100 rounded-full p-3 mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+            </svg>
+          </div>
+          <h4 class="text-lg font-bold text-gray-800">Sé Relevante</h4>
+        </div>
+        <p class="text-gray-600">Comparte información que sea útil e interesante para tus compañeros</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Pie de Página -->
+  <footer class="bg-gradient-to-r from-green-900 via-green-800 to-green-900 text-white py-8 px-6 mt-12">
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+        <div>
+          <h3 class="text-xl font-bold mb-3">I.E. COMFAMILIAR</h3>
+          <p class="text-sm opacity-80">Formando líderes con valores para construir un futuro mejor.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-3">Enlaces Rápidos</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/novedades" class="hover:text-green-300 transition-colors">Novedades</a></li>
+            <li><a href="/trabajos" class="hover:text-green-300 transition-colors">Trabajos</a></li>
+            <li><a href="/foro" class="hover:text-green-300 transition-colors">Foro Estudiantil</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-3">Foro Estudiantil</h3>
+          <p class="text-sm opacity-80">Comparte tus ideas y experiencias</p>
+          <p class="text-sm opacity-80 mt-2">con la comunidad educativa</p>
+        </div>
+      </div>
+      <div class="border-t border-green-700 pt-6 text-center">
+        <p class="text-sm opacity-80">© 2025 Periódico Escolar - I.E. COMFAMILIAR. Todos los derechos reservados.</p>
+      </div>
     </div>
   </footer>
 </body>
-
-
 </html>

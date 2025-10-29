@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil - I.E. COMFAMILIAR</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="/logo2.png">
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .animate-fade-in-up {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .animate-slide-in {
+      animation: slideInRight 0.6s ease-out forwards;
+    }
+
+    .card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .logo-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .badge-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    #logocabeza {
+      height: 180px;
+      margin-top: -40px;
+      margin-bottom: -40px;
+      margin-right: 85px;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .section-title {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 12px;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981, #059669);
+      border-radius: 2px;
+    }
+
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .mobile-menu.active {
+      max-height: 500px;
+      transition: max-height 0.4s ease-in;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: white;
+      margin: 5px 0;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    .tab-button {
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .tab-button.active {
+      color: #059669;
+      font-weight: 600;
+    }
+
+    .tab-button.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981, #059669);
+      border-radius: 2px;
+    }
+
+    .profile-avatar {
+      transition: all 0.3s ease;
+    }
+
+    .profile-avatar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+    }
+
+    .stat-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(30%, -30%);
+    }
+
+    .input-field {
+      transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-primary {
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .publication-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .publication-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .publication-card:hover::before {
+      left: 100%;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 font-sans">
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const hamburger = document.getElementById('hamburger');
+      menu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    }
+
+    function showTab(tabName) {
+      // Ocultar todas las tabs
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => {
+        tab.classList.add('hidden');
+      });
+
+      // Mostrar la tab seleccionada
+      document.getElementById(tabName).classList.remove('hidden');
+
+      // Actualizar botones activos
+      const buttons = document.querySelectorAll('.tab-button');
+      buttons.forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+    }
+  </script>
+
+  <!-- Encabezado -->
+  <header class="bg-gradient-to-r from-green-800 via-green-700 to-green-800 text-white py-4 px-6 shadow-2xl">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="animate-slide-in">
+        <h1 class="text-4xl font-bold tracking-tight">I.E. COMFAMILIAR</h1>
+        <p class="text-sm mt-1 opacity-90">Mi Perfil - Panel de Usuario</p>
+      </div>
+      <div class="items-center logo-float">
+        <a href="/index" class="block transition-transform hover:scale-105">
+          <img src="/logo2.png" id="logocabeza" alt="Logo Comfamiliar">
+        </a>
+      </div>
+      <div class="text-right animate-slide-in">
+        <p class="text-sm font-semibold">Año 2025 - Edición #1</p>
+        <p class="text-sm mt-1 italic opacity-90">"Educación con valores para el futuro"</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Barra de Navegación -->
+  <nav class="bg-green-700 text-white py-3 px-6 shadow-lg sticky top-0 z-50 glass-effect bg-opacity-95">
+    <div class="container mx-auto">
+      <div class="flex justify-between items-center">
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex space-x-8">
+          <a href="/inicio" class="nav-link font-medium hover:text-green-200">Inicio</a>
+          <a href="/novedades" class="nav-link font-medium hover:text-green-200">Novedades</a>
+          <a href="/trabajos" class="nav-link font-medium hover:text-green-200">Trabajos</a>
+          <a href="/foro" class="nav-link font-medium hover:text-green-200">Foro</a>
+          <a href="/subir-trabajos" class="nav-link font-medium hover:text-green-200">Subir Trabajos</a>
+          <a href="/logout" class="nav-link font-medium hover:text-red-300 hover:font-bold">Cerrar Sesión</a>
+        </div>
+
+        <!-- User Info Desktop -->
+        <div class="hidden md:flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+          <span class="font-semibold">Bienvenido/a, <%= datos1.nomusr %></span>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="hamburger" class="hamburger md:hidden focus:outline-none" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <!-- User Info Mobile -->
+        <div class="md:hidden flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+          <span class="font-semibold text-sm"><%= datos1.nomusr %></span>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="mobile-menu md:hidden">
+        <div class="flex flex-col space-y-3 pt-4 pb-2">
+          <a href="/inicio" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Inicio</a>
+          <a href="/novedades" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Novedades</a>
+          <a href="/trabajos" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Trabajos</a>
+          <a href="/foro" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Foro</a>
+          <% if (datos1.rolusr === "Administrador") { %>
+          <a href="/reqadmin" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Peticiones</a>
+          <% } %>
+          <a href="/subir-trabajos" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Subir Trabajos</a>
+          <a href="/logout" class="font-medium hover:text-red-300 py-2 px-4 rounded hover:bg-red-600 transition-colors">Cerrar Sesión</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido Principal -->
+  <main class="container mx-auto p-6">
+    <!-- Perfil del Usuario -->
+    <div class="bg-gradient-to-r from-green-600 to-emerald-500 rounded-2xl shadow-xl p-8 mb-8 text-white animate-fade-in-up">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-6">
+          <!-- Avatar -->
+          <div class="profile-avatar bg-white rounded-full p-2 shadow-xl">
+            <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-400 rounded-full flex items-center justify-center text-white text-4xl font-bold">
+              <%= datos1.nomusr.charAt(0).toUpperCase() %>
+            </div>
+          </div>
+          <!-- Información del Usuario -->
+          <div>
+            <h2 class="text-3xl font-bold mb-1"><%= datos1.nomusr %></h2>
+            <p class="text-lg opacity-90 mb-2"><%= datos1.mailusr || 'estudiante@comfamiliar.edu.co' %></p>
+            <span class="inline-block bg-white bg-opacity-20 px-4 py-1 rounded-full text-sm font-semibold">
+              <%= datos1.rolusr || 'Estudiante' %>
+            </span>
+          </div>
+        </div>
+        <div class="text-center md:text-right">
+          <p class="text-sm opacity-90 mb-1">Miembro desde</p>
+          <p class="text-2xl font-bold"><%= datos1.frusr || 'Enero 2025' %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estadísticas del Usuario -->
+    <!-- Estadísticas del Usuario -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+  <div class="stat-card bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg card-hover animate-fade-in-up" style="animation-delay: 0.1s;">
+    <div class="flex items-center justify-between">
+      <div>
+        <div class="text-4xl font-bold mb-2"><%= stats.totalPublicaciones %></div>
+        <div class="text-sm opacity-90">Publicaciones</div>
+      </div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="stat-card bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg card-hover animate-fade-in-up" style="animation-delay: 0.2s;">
+    <div class="flex items-center justify-between">
+      <div>
+        <div class="text-4xl font-bold mb-2"><%= stats.aprobadas %></div>
+        <div class="text-sm opacity-90">Aprobadas</div>
+      </div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="stat-card bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg card-hover animate-fade-in-up" style="animation-delay: 0.3s;">
+    <div class="flex items-center justify-between">
+      <div>
+        <div class="text-4xl font-bold mb-2"><%= stats.pendientes %></div>
+        <div class="text-sm opacity-90">Pendientes</div>
+      </div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="stat-card bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl p-6 text-white shadow-lg card-hover animate-fade-in-up" style="animation-delay: 0.4s;">
+    <div class="flex items-center justify-between">
+      <div>
+        <div class="text-4xl font-bold mb-2"><%= stats.trabajos %></div>
+        <div class="text-sm opacity-90">Trabajos Subidos</div>
+      </div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+      </svg>
+    </div>
+  </div>
+</div>
+
+    <!-- Tabs de Navegación -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
+      <div class="border-b border-gray-200">
+        <div class="flex flex-wrap gap-2 p-4">
+          <button onclick="showTab('mis-publicaciones')" class="tab-button active px-6 py-3 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors">
+            📝 Mis Publicaciones
+          </button>
+          <button onclick="showTab('editar-perfil')" class="tab-button px-6 py-3 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors">
+            👤 Editar Perfil
+          </button>
+          <button onclick="showTab('cambiar-contrasena')" class="tab-button px-6 py-3 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors">
+            🔒 Cambiar Contraseña
+          </button>
+          <button onclick="showTab('configuracion')" class="tab-button px-6 py-3 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors">
+            ⚙️ Configuración
+          </button>
+        </div>
+      </div>
+
+      <!-- Contenido de las Tabs -->
+      <div class="p-8">
+        <!-- Tab: Mis Publicaciones -->
+        <div id="mis-publicaciones" class="tab-content">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6 section-title">Mis Publicaciones</h3>
+          <div class="space-y-4">
+            <!-- Publicación 1 -->
+            <div class="publication-card bg-gray-50 rounded-xl p-6 card-hover">
+              <div class="flex items-start justify-between mb-3">
+                <div class="flex-1">
+                  <h4 class="text-xl font-bold text-green-800 mb-2">Festival Artístico Escolar</h4>
+                  <p class="text-gray-700 mb-3">Reseña completa del festival artístico donde participaron más de 100 estudiantes...</p>
+                </div>
+                <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ml-4">
+                  ✓ Aprobada
+                </span>
+              </div>
+              <div class="flex items-center justify-between text-sm text-gray-600">
+                <div class="flex items-center gap-4">
+                  <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                    </svg>
+                    15 Ene 2025
+                  </span>
+                  <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                      <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                    </svg>
+                    87 vistas
+                  </span>
+                </div>
+                <button class="text-green-600 hover:text-green-800 font-semibold transition-colors">
+                  Ver detalles →
+                </button>
+              </div>
+            </div>
+
+            <!-- Publicación 2 -->
+            <div class="publication-card bg-gray-50 rounded-xl p-6 card-hover">
+              <div class="flex items-start justify-between mb-3">
+                <div class="flex-1">
+                  <h4 class="text-xl font-bold text-green-800 mb-2">Torneo Intercolegial de Fútbol</h4>
+                  <p class="text-gray-700 mb-3">Nuestro equipo obtuvo el primer lugar en el torneo regional con un desempeño excepcional...</p>
+                </div>
+                <span class="inline-block bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ml-4">
+                  ⏳ Pendiente
+                </span>
+              </div>
+              <div class="flex items-center justify-between text-sm text-gray-600">
+                <div class="flex items-center gap-4">
+                  <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                    </svg>
+                    20 Ene 2025
+                  </span>
+                  <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                      <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                    </svg>
+                    0 vistas
+                  </span>
+                </div>
+                <button class="text-green-600 hover:text-green-800 font-semibold transition-colors">
+                  Editar →
+                </button>
+              </div>
+            </div>
+
+            <!-- Publicación 3 -->
+            <div class="publication-card bg-gray-50 rounded-xl p-6 card-hover">
+              <div class="flex items-start justify-between mb-3">
+                <div class="flex-1">
+                  <h4 class="text-xl font-bold text-green-800 mb-2">Feria de Ciencias 2025</h4>
+                  <p class="text-gray-700 mb-3">Proyectos innovadores presentados por estudiantes de todos los grados en la feria anual...</p>
+                </div>
+                <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ml-4">
+                  ✓ Aprobada
+                </span>
+              </div>
+              <div class="flex items-center justify-between text-sm text-gray-600">
+                <div class="flex items-center gap-4">
+                  <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                    </svg>
+                    10 Ene 2025
+                  </span>
+                  <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                      <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                    </svg>
+                    158 vistas
+                  </span>
+                </div>
+                <button class="text-green-600 hover:text-green-800 font-semibold transition-colors">
+                  Ver detalles →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Editar Perfil -->
+        <div id="editar-perfil" class="tab-content hidden">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6 section-title">Editar Perfil</h3>
+          <form method="POST" action="/actualizar-perfil" class="space-y-6">

@@ -256,6 +256,9 @@
           <a href="/inicio" class="nav-link font-medium hover:text-green-200">Inicio</a>
           <a href="/novedades" class="nav-link font-medium hover:text-green-200">Novedades</a>
           <a href="/trabajos" class="nav-link font-medium hover:text-green-200">Trabajos</a>
+          <% if (datos1.rolusr === "Administrador") { %>
+          <a href="/reqadmin" class="nav-link font-medium hover:text-green-200">Peticiones</a>
+          <% } %>
           <a href="/foro" class="nav-link font-medium hover:text-green-200">Foro</a>
           <a href="/subir-trabajos" class="nav-link font-medium hover:text-green-200">Subir Trabajos</a>
           <a href="/logout" class="nav-link font-medium hover:text-red-300 hover:font-bold">Cerrar Sesión</a>

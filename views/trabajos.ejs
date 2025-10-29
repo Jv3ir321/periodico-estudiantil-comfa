@@ -323,6 +323,9 @@
           <a href="/novedades" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Novedades</a>
           <a href="/trabajos" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Trabajos</a>
           <a href="/foro" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Foro</a>
+          <% if (datos1.rolusr === "Administrador") { %>
+          <a href="/reqadmin" class="nav-link font-medium hover:text-green-200">Peticiones</a>
+          <% } %>
           <a href="/subir-trabajos" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Subir Trabajos</a>
           <a href="/logout" class="font-medium hover:text-red-300 py-2 px-4 rounded hover:bg-red-600 transition-colors">Cerrar Sesión</a>
         </div>

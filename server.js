@@ -97,8 +97,6 @@ app.get("/", (req, res) => {
 app.get("/inicio", (req, res) => {
     if (!req.session.login) {
         res.redirect("/")
-    } else if (req.session.rolusr === "Administrador") {
-        res.render("inicioadmin", {datos1: req.session})
     } else {
         res.render("inicio", {datos1: req.session})
     }
@@ -243,6 +241,58 @@ app.get("/foro/:nombre_publicacion", (req, res) => {
     }
 })
 
+app.get("/usuarios/:nombre_usuario", (req, res) => {
+    if (!req.session.login) {
+        res.redirect("/")
+    } else {
+
+        const nombre_usuario = req.params.nombre_usuario;
+
+        const consultaPublicaciones = "SELECT * FROM PUBLICACIONES WHERE autor_publicacion = ? ORDER BY fecha_publicacion DESC";
+        
+        const consultaPendientes = "SELECT * FROM PUBLICACIONES_REQADMIN WHERE autor_publicacion = ? ORDER BY fecha_publicacion DESC";
+        
+        const consultaTrabajos = "SELECT * FROM POSTS_TRABS WHERE autor_post = ? ORDER BY fecha_subida DESC";
+
+        // Ejecutar las tres consultas
+        conexion.query(consultaPublicaciones, [nombre_usuario], (err, publicaciones) => {
+            if (err) {
+                console.log("Error al obtener publicaciones:", err);
+                return res.status(500).send("Error al cargar publicaciones");
+            }
+
+            conexion.query(consultaPendientes, [nombre_usuario], (err, publicacionesPendientes) => {
+                if (err) {
+                    console.log("Error al obtener publicaciones pendientes:", err);
+                    return res.status(500).send("Error al cargar publicaciones pendientes");
+                }
+
+                conexion.query(consultaTrabajos, [nombre_usuario], (err, trabajos) => {
+                    if (err) {
+                        console.log("Error al obtener trabajos:", err);
+                        return res.status(500).send("Error al cargar trabajos");
+                    }
+
+                    // Calcular estadísticas
+                    const stats = {
+                        totalPublicaciones: publicaciones.length + publicacionesPendientes.length,
+                        aprobadas: publicaciones.length,
+                        pendientes: publicacionesPendientes.length,
+                        trabajos: trabajos.length
+                    };
+
+                    res.render("usuarios", {
+                        datos1: req.session,
+                        publicaciones: publicaciones,
+                        publicacionesPendientes: publicacionesPendientes,
+                        trabajos: trabajos,
+                        stats: stats
+                    });
+                });
+            });
+        });
+    }
+});
 
 // ========== RUTAS POST ==========
 // Registro de usuarios
@@ -674,6 +724,11 @@ app.post("/responder", (req, res) => {
         }
     })
 });
+
+
+
+
+
 
 // ========== INICIAR SERVIDOR ==========   
 app.listen(5500, () => {
