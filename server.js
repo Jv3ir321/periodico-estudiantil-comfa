@@ -247,11 +247,8 @@ app.get("/usuarios/:nombre_usuario", (req, res) => {
     } else {
 
         const nombre_usuario = req.params.nombre_usuario;
-
         const consultaPublicaciones = "SELECT * FROM PUBLICACIONES WHERE autor_publicacion = ? ORDER BY fecha_publicacion DESC";
-        
         const consultaPendientes = "SELECT * FROM PUBLICACIONES_REQADMIN WHERE autor_publicacion = ? ORDER BY fecha_publicacion DESC";
-        
         const consultaTrabajos = "SELECT * FROM POSTS_TRABS WHERE autor_post = ? ORDER BY fecha_subida DESC";
 
         // Ejecutar las tres consultas

@@ -269,7 +269,7 @@
         <p class="text-sm mt-1 opacity-90">Mi Perfil - Panel de Usuario</p>
       </div>
       <div class="items-center logo-float">
-        <a href="/index" class="block transition-transform hover:scale-105">
+        <a href="/inicio" class="block transition-transform hover:scale-105">
           <img src="/logo2.png" id="logocabeza" alt="Logo Comfamiliar">
         </a>
       </div>
@@ -358,7 +358,7 @@
         </div>
         <div class="text-center md:text-right">
           <p class="text-sm opacity-90 mb-1">Miembro desde</p>
-          <p class="text-2xl font-bold"><%= datos1.frusr || 'Enero 2025' %></p>
+          <p class="text-2xl font-bold"><%= datos1.frusr|| 'Enero 2025' %></p>
         </div>
       </div>
     </div>
@@ -422,14 +422,7 @@
           <button onclick="showTab('mis-publicaciones')" class="tab-button active px-6 py-3 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors">
              Mis Publicaciones
           </button>
-          <button onclick="showTab('editar-perfil')" class="tab-button px-6 py-3 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors">
-             Editar Perfil
-          </button>
-          <button onclick="showTab('cambiar-contrasena')" class="tab-button px-6 py-3 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors">
-             Cambiar Contraseña
-          </button>
-          <button onclick="showTab('configuracion')" class="tab-button px-6 py-3 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors">
-             Configuración
+         
           </button>
         </div>
       </div>
@@ -440,108 +433,66 @@
         <div id="mis-publicaciones" class="tab-content">
           <h3 class="text-2xl font-bold text-gray-800 mb-6 section-title">Mis Publicaciones</h3>
           <div class="space-y-4">
-            <!-- Publicación 1 -->
-            <div class="publication-card bg-gray-50 rounded-xl p-6 card-hover">
-              <div class="flex items-start justify-between mb-3">
-                <div class="flex-1">
-                  <h4 class="text-xl font-bold text-green-800 mb-2">Festival Artístico Escolar</h4>
-                  <p class="text-gray-700 mb-3">Reseña completa del festival artístico donde participaron más de 100 estudiantes...</p>
+            <% if (!publicaciones || publicaciones.length === 0) { %>
+              <p class="text-gray-600">No has realizado ninguna publicación aún.</p>
+            <% } else { %>
+              <% publicaciones.forEach(function(pub) { %>
+                <div class="publication-card bg-gray-50 rounded-xl p-6 card-hover">
+                  <div class="flex items-start justify-between mb-3">
+                    <div class="flex-1">
+                      <h4 class="text-xl font-bold text-green-800 mb-2"><%= pub.nombre_publicacion || pub.titulo || 'Sin título' %></h4>
+                      <p class="text-gray-700 mb-3"><%= pub.contenido_publicacion || pub.resena || '' %></p>
+                    </div>
+                    <% if (pub.estado && (pub.estado.toLowerCase() === 'aprobada' || pub.estado.toLowerCase() === 'aprobado')) { %>
+                      <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ml-4">
+                        ✓ Aprobada
+                      </span>
+                    <% } else { %>
+                      <span class="inline-block bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ml-4">
+                        ⏳ Pendiente
+                      </span>
+                    <% } %>
+                  </div>
                 </div>
-                <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ml-4">
-                  ✓ Aprobada
-                </span>
-              </div>
-              <div class="flex items-center justify-between text-sm text-gray-600">
-                <div class="flex items-center gap-4">
-                  <span class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                    </svg>
-                    15 Ene 2025
-                  </span>
-                  <span class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                      <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                    </svg>
-                    87 vistas
-                  </span>
-                </div>
-                <button class="text-green-600 hover:text-green-800 font-semibold transition-colors">
-                  Ver detalles →
-                </button>
-              </div>
-            </div>
-
-            <!-- Publicación 2 -->
-            <div class="publication-card bg-gray-50 rounded-xl p-6 card-hover">
-              <div class="flex items-start justify-between mb-3">
-                <div class="flex-1">
-                  <h4 class="text-xl font-bold text-green-800 mb-2">Torneo Intercolegial de Fútbol</h4>
-                  <p class="text-gray-700 mb-3">Nuestro equipo obtuvo el primer lugar en el torneo regional con un desempeño excepcional...</p>
-                </div>
-                <span class="inline-block bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ml-4">
-                  ⏳ Pendiente
-                </span>
-              </div>
-              <div class="flex items-center justify-between text-sm text-gray-600">
-                <div class="flex items-center gap-4">
-                  <span class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                    </svg>
-                    20 Ene 2025
-                  </span>
-                  <span class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                      <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                    </svg>
-                    0 vistas
-                  </span>
-                </div>
-                <button class="text-green-600 hover:text-green-800 font-semibold transition-colors">
-                  Editar →
-                </button>
-              </div>
-            </div>
-
-            <!-- Publicación 3 -->
-            <div class="publication-card bg-gray-50 rounded-xl p-6 card-hover">
-              <div class="flex items-start justify-between mb-3">
-                <div class="flex-1">
-                  <h4 class="text-xl font-bold text-green-800 mb-2">Feria de Ciencias 2025</h4>
-                  <p class="text-gray-700 mb-3">Proyectos innovadores presentados por estudiantes de todos los grados en la feria anual...</p>
-                </div>
-                <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ml-4">
-                  ✓ Aprobada
-                </span>
-              </div>
-              <div class="flex items-center justify-between text-sm text-gray-600">
-                <div class="flex items-center gap-4">
-                  <span class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                    </svg>
-                    10 Ene 2025
-                  </span>
-                  <span class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                      <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                    </svg>
-                    158 vistas
-                  </span>
-                </div>
-                <button class="text-green-600 hover:text-green-800 font-semibold transition-colors">
-                  Ver detalles →
-                </button>
-              </div>
-            </div>
+              <% }); %>
+            <% } %>
           </div>
         </div>
 
-        <!-- Tab: Editar Perfil -->
+<!-- Tab: Editar Perfil -->
         <div id="editar-perfil" class="tab-content hidden">
           <h3 class="text-2xl font-bold text-gray-800 mb-6 section-title">Editar Perfil</h3>
-          <form method="POST" action="/actualizar-perfil" class="space-y-6">
+          <form method="post" action="/actualizar-datos" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-gray-700 font-semibold mb-2">Nombre de Usuario</label>
+                <input type="text" name="nomusr" value="<%= datos1.nomusr %>" class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+              </div>
+              <div>
+                <label class="block text-gray-700 font-semibold mb-2">Correo Electrónico</label>
+                <input type="email" name="mailusr" value="<%= datos1.mailusr || '' %>" class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+              </div>
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">Biografía</label>
+              <textarea name="bio" rows="4" class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="Cuéntanos algo sobre ti..."><%= datos1.bio || '' %></textarea>
+            </div>
+            <div class="flex justify-end">
+              <button type="submit" class="btn-primary bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-green-700 hover:to-emerald-700 shadow-lg">
+                Guardar Cambios
+              </button>
+            </div>
+          </form>
+        </div>
+
+      
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-r from-green-800 via-green-700 to-green-800 text-white py-8 px-6 mt-12">
+    <div class="container mx-auto text-center">
+      <p class="text-sm opacity-90">&copy; 2025 I.E. COMFAMILIAR - Todos los derechos reservados</p>
+      <p class="text-xs mt-2 opacity-75">Educación de calidad para el futuro de Colombia</p>
+    </div>
+  </footer>
+</body>
+</html>

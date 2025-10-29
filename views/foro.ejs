@@ -279,7 +279,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
           </svg>
-          <span class="font-semibold">Bienvenido/a, <%= datos1.nomusr %></span>
+          <span onclick="window.location.href='/usuarios/<%= datos1.nomusr %>'" class="font-semibold hover:underline">Bienvenido/a, <%= datos1.nomusr %></span>
         </div>
 
         <!-- Mobile Menu Button -->
@@ -294,7 +294,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
           </svg>
-          <span class="font-semibold text-sm"><%= datos1.nomusr %></span>
+          <span onclick="window.location.href='/usuarios/<%= datos1.nomusr %>'" class="font-semibold hover:underline">Bienvenido/a, <%= datos1.nomusr %></span>
         </div>
       </div>
 
@@ -310,6 +310,8 @@
           <a href="/foro" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Foro</a>
           <a href="/subir-trabajos" class="font-medium hover:text-green-200 py-2 px-4 rounded hover:bg-green-600 transition-colors">Subir Trabajos</a>
           <a href="/logout" class="font-medium hover:text-red-300 py-2 px-4 rounded hover:bg-red-600 transition-colors">Cerrar Sesión</a>
+          <span onclick="window.location.href='/usuarios/<%= datos1.nomusr %>'" class="font-semibold hover:underline">Bienvenido/a, <%= datos1.nomusr %></span>
+
         </div>
       </div>
     </div>
