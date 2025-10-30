@@ -98,7 +98,16 @@ app.get("/inicio", (req, res) => {
     if (!req.session.login) {
         res.redirect("/")
     } else {
-        res.render("inicio", {datos1: req.session})
+        const consultaPost = "SELECT * FROM POSTS_ADMIN ORDER BY fecha_creacion asc"
+        conexion.query(consultaPost, (err, resultado) => {
+            if (err) {
+                console.log("Ha habido un error", err)
+                return res.status(500).send("Ha ocurrido un error")
+            }
+            let posts = resultado
+            res.render("inicio", {datos1: req.session, posts : posts})
+        })
+        
     }
 })
 
@@ -420,13 +429,15 @@ app.post("/enviar", (req, res) => {
     
 })
 
-app.post("/publicar", (req, res)=>{
+app.post("/publicar", upload.single('imagen'), (req, res)=>{
     const databod = req.body
+    const archdata = req.file
     let titulo = databod.titulopub
     let contenido = databod.mensajepub
+    let imagenpath = archdata.path
 
-    const consult = "INSERT INTO POSTS_ADMIN(titulo, contenido, autor_post) VALUES(?, ?, ?)"
-    conexion.query(consult, [titulo, contenido, req.session.nomusr], (err) => {
+    const consult = "INSERT INTO POSTS_ADMIN(titulo, contenido, autor_post, imagenpath) VALUES(?, ?, ?, ?)"
+    conexion.query(consult, [titulo, contenido, req.session.nomusr, imagenpath], (err) => {
         if(err){
             console.log("Error al enviar el mensaje", err)
             return res.status(500).send("Error al publicar")
